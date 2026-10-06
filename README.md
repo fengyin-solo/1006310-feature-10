@@ -38,6 +38,13 @@ cd frontend
 npm run build
 ```
 
+排水取值口径验证（不依赖浏览器，覆盖一次落库、对账回落、班次迁移、断线重试、v1 升级）：
+
+```bash
+cd frontend
+npm run verify:drainage
+```
+
 ## 业务模块
 
 | 模块 | 目录 | 业务对象 | 主要字段 |
@@ -68,4 +75,8 @@ npm run build
 - 字段、状态、动作与流转目标集中在 `frontend/src/data/modules.ts`；示例数据在
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
-- 想回到初始数据：清掉浏览器里 `urban-utility-tunnel:entries` 这一项，或调用 `resetModule(模块)`。
+- 排水业务口径集中在 `src/data/drainage.ts`（状态、存量回填、对账、班次迁移），
+  落库采用**覆盖**（不另存新版本），操作历史只追加不改写；启泵水位缺项按同舱中位数补值，
+  无参照样本则显式留空「待核定」并生待办。
+- 想回到初始数据：清掉浏览器里 `urban-utility-tunnel:state:v2` 这一项，或调用 `resetModule(模块)`。
+  旧键 `urban-utility-tunnel:entries` 首次打开时自动迁移到 v2。
